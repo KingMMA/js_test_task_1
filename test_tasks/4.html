@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Група студентів</title>
+  </head>
+  <body>
+    <h1>Група студентів</h1>
+
+    <div>
+      <button class="button" id="showBtn">Show</button>
+      <button class="button" id="addBtn">+</button>
+      <button class="button" id="removeBtn">-</button>
+      <button class="button" id="averageBtn">Average</button>
+    </div>
+
+    <ul id="studentList" class="student-list"></ul>
+    <!-- Визначаємо це, щоб потім змінювати -->
+    <p id="averageResult"></p>
+
+    <script>
+      let students = {
+        "Кравченко Богдан": 4.5,
+        "Петро Сидоренко": 3.8,
+        "Марія Кравченко": 4.9,
+      };
+
+      function showStudents() {
+        const studentList = document.getElementById("studentList");
+        studentList.innerHTML = "";
+
+        for (let name in students) {
+          const listItem = document.createElement("li"); // Елемент списку в HTML
+          listItem.textContent = `${name}: ${students[name]}`;
+          studentList.appendChild(listItem);
+        }
+      }
+
+      function addStudent() {
+        const studentName = prompt("Введіть прізвище та ім'я студента:");
+        const grade = parseFloat(prompt("Введіть середній бал студента:"));
+
+        if (studentName && !isNaN(grade)) {
+          students[studentName] = grade;
+          showStudents();
+        } else {
+          alert("Некоректні дані!");
+        }
+      }
+
+      function removeStudent() {
+        const studentName = prompt(
+          "Введіть прізвище та ім'я студента для видалення:"
+        );
+
+        if (students[studentName]) {
+          delete students[studentName];
+          showStudents();
+        } else {
+          alert("Студента не знайдено!");
+        }
+      }
+
+      function calculateAverage() {
+        const grades = Object.values(students);
+        if (grades.length > 0) {
+          let average = 0;
+          grades.forEach(element => average += element);
+          average = average/grades.length;
+          document.getElementById(
+            "averageResult"
+          ).textContent = `Середній бал групи: ${average.toFixed(2)}`;
+        } else {
+          alert("Немає студентів для обчислення середнього балу.");
+        }
+      }
+
+      document
+        .getElementById("showBtn")
+        .addEventListener("click", showStudents);
+      document.getElementById("addBtn").addEventListener("click", addStudent);
+      document
+        .getElementById("removeBtn")
+        .addEventListener("click", removeStudent);
+      document
+        .getElementById("averageBtn")
+        .addEventListener("click", calculateAverage);
+    </script>
+  </body>
+</html>
